@@ -15,6 +15,22 @@ export class AuthenticationService {
 
   constructor() { }
 
+  /* - - - - - - - - - - - - - - - - - - - - - - - - */
+
+  setToken(token) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  clearToken() {
+    return localStorage.removeItem('token');
+  }
+
+  /* - - - - - - - - - - - - - - - - - - - - - - - - */
+
   login(username: string, password: string): Observable<string> {
     return this.fakeLogin(username, password);
   }
@@ -55,13 +71,5 @@ export class AuthenticationService {
    */
   private fakeSignup(user: IUser): Observable<boolean> {
     return of(!user.username.startsWith('fail'));
-  }
-
-  private setToken(token) {
-    localStorage.setItem('token', token);
-  }
-
-  private getToken(token) {
-    localStorage.getItem('token');
   }
 }
