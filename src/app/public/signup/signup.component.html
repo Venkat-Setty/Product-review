@@ -1,0 +1,49 @@
+<ng-container *ngIf="!signupSuccess">
+  <form (submit)="signup()">
+    <div>
+      <input type="text" id="email" name="email" required
+        [(ngModel)]="user.email" placeholder="Email">
+    </div>
+    <div>
+      <input type="text" id="username" name="username" required
+        [(ngModel)]="user.username" placeholder="Username">
+    </div>
+    <div>
+      <select name="country" id="country" required
+        [(ngModel)]="user.country" placeholder="Select Country"
+      >
+        <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+      </select>
+    </div>
+
+    <div>
+      <input type="password" id="password" name="password" required
+        [(ngModel)]="user.password" placeholder="Password">
+    </div>
+    <div>
+      <input type="password" id="confirm-password" name="confirm-password" required
+        [(ngModel)]="confirmPassword" placeholder="Confirm Password">
+    </div>
+
+    <div *ngIf="message" class="message">
+      <p>{{message}}</p>
+    </div>
+
+    <div>
+      <button>Login</button>
+    </div>
+  </form>
+  <div style="margin-top: 3rem;">
+    <a [routerLink]="'/login'">Login</a>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="signupSuccess">
+  <p style="color:#171C62;">
+    Congratulations, {{user.username}}, You have successfully signed up!<br>
+    Happy reviewing!
+  </p>
+  <p style="color:#171C62;">
+    <a [routerLink]="'/product-lookup'">Got it, Proceed to review >></a>
+  </p>
+</ng-container>

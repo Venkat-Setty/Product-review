@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+@import "https://fonts.googleapis.com/css?family=Lato:400";
+
+body {
+  background: #c2f4f4;
+  font-size: 30px;
+  font-family: 'Roboto', sans-serif;
+}
+
+input, select, button {
+  padding: 1rem 2rem;
+  margin: 0.5rem 1rem;
+  font-size: 30px;
+}
+
+button {
+  border: none;
+  background-color: #476e43;
+  color: #fff;
+  border-radius: 5px;
+  margin: 0.5rem 1.5rem;
+  cursor: pointer;
+}
+
+input, select {
+  font-size: 25px;
+}
+p {
+  font-size: 30px;
+}
+.message {
+  color: red;
+}

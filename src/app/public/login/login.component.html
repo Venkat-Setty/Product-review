@@ -1,0 +1,26 @@
+<form (submit)="login()">
+  <div>
+    <!--<label for="username">Username</label>-->
+    <input type="text" id="username" name="username"
+      [(ngModel)]="username" placeholder="Username">
+  </div>
+
+  <div>
+    <!--<label for="password">Password</label>-->
+    <input type="password" id="password" name="password"
+      [(ngModel)]="password" placeholder="Password">
+  </div>
+
+  <div *ngIf="message" class="message">
+    <p>{{message}}</p>
+  </div>
+
+  <div>
+    <button>Login</button>
+  </div>
+</form>
+<div style="margin-top: 3rem;">
+  <a [routerLink]="'/forgot-password'">Forgot password</a>
+  &nbsp;
+  <a [routerLink]="'/signup'">Signup</a>
+</div>
