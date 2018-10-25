@@ -1,7 +1,8 @@
-<div class="topbar-right">
-  <ul class="topbar-btns">
-    <li class="dropdown">
-      <a class="dropdown-item" (click)="logout()"><i class="ti-power-off"></i> Logout</a>
-    </li>
-  </ul>
+<div class="topbar-container">
+  <h1 style="text-align: center;margin: 3rem auto;">
+    <a routerLink="/">Product review</a>
+  </h1>
+</div>
+<div class="welcome-user" *ngIf="user">
+  Welcome, {{user.username}}! <a (click)="logout()">Logout</a>
 </div>

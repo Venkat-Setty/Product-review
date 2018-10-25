@@ -2,6 +2,11 @@
 body {
   background: #c2f4f4;
 }
+a {
+  cursor: pointer;
+  color: #007bff;
+}
+
 /*
 @import "https://fonts.googleapis.com/css?family=Lato:400";
 body {

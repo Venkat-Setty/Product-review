@@ -1,0 +1,9 @@
+.topbar-container {
+  position: relative;
+}
+
+.welcome-user {
+  position: absolute;
+  right: 50px;
+  top: 30px;
+}

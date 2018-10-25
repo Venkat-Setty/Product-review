@@ -14,7 +14,6 @@ export class PublicGuard implements CanActivate {
 
   canActivate() {
     return this.auth.user().pipe(map((user) => {
-      console.log(user);
       const canActivate = !user;
       if (!canActivate) {
         this.redirectToLastUrl();

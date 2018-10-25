@@ -14,6 +14,8 @@ const appRoutes: Routes = [
     loadChildren: './portal/portal.module#PortalModule',
     canActivate: [AuthGuard]
   },
+  { path: '', redirectTo: 'product-review', pathMatch: 'full' },
+  { path: '**', redirectTo: 'product-review' },
 ];
 
 @NgModule({
