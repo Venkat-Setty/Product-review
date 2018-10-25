@@ -15,6 +15,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [PortalComponent, ProductLookupComponent, ReviewProductComponent]
+  declarations: [
+    PortalComponent,
+    ProductLookupComponent,
+    ReviewProductComponent,
+  ],
 })
 export class PortalModule { }

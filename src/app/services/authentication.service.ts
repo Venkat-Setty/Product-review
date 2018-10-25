@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { User } from 'firebase';
 import { IUser } from '../entities/user';
 
 @Injectable({
@@ -7,69 +10,25 @@ import { IUser } from '../entities/user';
 })
 export class AuthenticationService {
 
-  private account = {
-    username: 'admin',
-    email: 'admin@product-review.dev',
-    password: 'admin'
-  };
-
-  constructor() { }
-
-  /* - - - - - - - - - - - - - - - - - - - - - - - - */
-
-  setToken(token) {
-    localStorage.setItem('token', token);
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router,
+  ) {
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+  user(): Observable<User | null> {
+    return this.afAuth.user;
   }
 
-  clearToken() {
-    return localStorage.removeItem('token');
+  login(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
-  /* - - - - - - - - - - - - - - - - - - - - - - - - */
-
-  login(username: string, password: string): Observable<string> {
-    return this.fakeLogin(username, password);
+  signup(user: IUser) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
   }
 
-
-  reset(email: string): Observable<boolean> {
-    return this.fakeReset(email);
-  }
-
-  signup(user: IUser): Observable<boolean> {
-    return this.fakeSignup(user);
-  }
-
-
-  /**
-   * fake services
-   *  return token if authenticated
-   */
-  private fakeLogin(username: string, password: string): Observable<string> {
-    console.log(username, password, this.account);
-    if (username === this.account.username && password === this.account.password) {
-      const token = 'this-is-token';
-      this.setToken(token)
-      return of(token);
-    } else {
-      return of(null);
-    }
-  }
-  /**
-   * fake reset, return true if email start with admin@...
-   */
-  private fakeReset(email: string): Observable<boolean> {
-    return of(email.startsWith('admin'));
-  }
-
-  /**
-   * fake register return false if the username start with fail
-   */
-  private fakeSignup(user: IUser): Observable<boolean> {
-    return of(!user.username.startsWith('fail'));
+  logout() {
+    return this.afAuth.auth.signOut();
   }
 }
