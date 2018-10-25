@@ -6,6 +6,7 @@ import { ReviewProductComponent } from './review-product/review-product.componen
 import {PortalRoutingModule} from './portal-routing.module';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { TopbarComponent } from './layout/topbar/topbar.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     PortalComponent,
     ProductLookupComponent,
     ReviewProductComponent,
+    TopbarComponent,
   ],
 })
 export class PortalModule { }

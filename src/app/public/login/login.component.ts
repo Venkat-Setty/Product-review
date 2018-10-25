@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   public username: string;
   public password: string;
   public message: string;
+  public cssMessage: string;
 
   constructor(
     private auth: AuthenticationService,
