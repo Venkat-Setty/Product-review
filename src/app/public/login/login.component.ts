@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  public isLogin: boolean;
   public username: string;
   public password: string;
   public message: string;
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isLogin = false;
   }
 
   login() {
@@ -27,6 +29,7 @@ export class LoginComponent implements OnInit {
       (token) => {
         console.log('token', token);
         if (token) {
+          this.isLogin = true;
           this.router.navigateByUrl(''); // todo make product-lookup page
           // this.router.navigateByUrl('/product-lookup');
         } else {

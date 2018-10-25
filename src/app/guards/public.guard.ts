@@ -21,8 +21,8 @@ export class PublicGuard implements CanActivate {
   }
 
   private redirectToLastUrl() {
-    // const redirect = '/product-lookup';
+    const redirect = '/product-lookup';
     console.log('redirectToLastUrl');
-    // this.router.navigateByUrl();
+    this.router.navigateByUrl(redirect);
   }
 }

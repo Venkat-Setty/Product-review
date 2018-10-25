@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { PublicRoutingModule } from './public-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [

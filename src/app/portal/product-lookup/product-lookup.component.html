@@ -1,3 +1,26 @@
-<p>
-  product-lookup works!
-</p>
+<div class="container">
+  <form class="row form-type-material">
+    <div class="col-3 form-group">
+      <select class="form-control" [ngModel]="currentShop" name="currentShop" (ngModelChange)="changeShop($event)">
+        <option *ngFor="let shop of shops" [ngValue]="shop">{{shop.name}}</option>
+      </select>
+    </div>
+    <div class="col-4 form-group">
+      <select class="form-control" [ngModel]="currentCategory" name="currentCategory" (ngModelChange)="changeCategory($event)">
+        <option *ngFor="let category of currentCategoryList" [ngValue]="category">{{category.name}}</option>
+      </select>
+    </div>
+    <div class="col-4 form-group">
+      <select class="form-control" [ngModel]="currentProduct" name="currentProduct" (ngModelChange)="changeProduct($event)">
+        <option *ngFor="let product of currentProductList" [ngValue]="product">{{product.name}}</option>
+      </select>
+    </div>
+    <div class="col-1 form-group">
+      <button class="btn btn-primary" (click)="go()">Go</button>
+    </div>
+  </form>
+  <div class="alert text-center">
+    <p>Welcome User! Choose a product to review from the product list <br>
+    or look up for other's reviews</p>
+  </div>
+</div>

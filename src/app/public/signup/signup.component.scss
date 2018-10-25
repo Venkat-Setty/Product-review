@@ -5,14 +5,4 @@
 form {
   width: 400px;
   margin: 2rem auto;
-
-  input, select {
-    margin-left: 0;
-    margin-right: 0;
-    width: calc(100% - 4rem - 4px);
-    display: inline-block;
-  }
-  select {
-    width: 100%;
-  }
 }

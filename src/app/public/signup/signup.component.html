@@ -1,27 +1,27 @@
 <ng-container *ngIf="!signupSuccess">
-  <form (submit)="signup()">
-    <div>
-      <input type="text" id="email" name="email" required
+  <form class="form-type-material" (submit)="signup()">
+    <div class="form-group">
+      <input class="form-control" type="text" id="email" name="email" required
         [(ngModel)]="user.email" placeholder="Email">
     </div>
-    <div>
-      <input type="text" id="username" name="username" required
+    <div class="form-group">
+      <input class="form-control" type="text" id="username" name="username" required
         [(ngModel)]="user.username" placeholder="Username">
     </div>
-    <div>
-      <select name="country" id="country" required
+    <div class="form-group">
+      <select class="form-control" name="country" id="country" required
         [(ngModel)]="user.country" placeholder="Select Country"
       >
         <option *ngFor="let country of countries" [value]="country">{{country}}</option>
       </select>
     </div>
 
-    <div>
-      <input type="password" id="password" name="password" required
+    <div class="form-group">
+      <input class="form-control" type="password" id="password" name="password" required
         [(ngModel)]="user.password" placeholder="Password">
     </div>
-    <div>
-      <input type="password" id="confirm-password" name="confirm-password" required
+    <div class="form-group">
+      <input class="form-control" type="password" id="confirm-password" name="confirm-password" required
         [(ngModel)]="confirmPassword" placeholder="Confirm Password">
     </div>
 
@@ -30,7 +30,7 @@
     </div>
 
     <div>
-      <button>Login</button>
+      <button class="btn btn-primary">Login</button>
     </div>
   </form>
   <div style="margin-top: 3rem;">
