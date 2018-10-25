@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@import "https://fonts.googleapis.com/css?family=Lato:400";
-
 body {
   background: #c2f4f4;
-  font-size: 30px;
+}
+/*
+@import "https://fonts.googleapis.com/css?family=Lato:400";
+body {
+  background: #c2f4f4;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -31,3 +33,4 @@ p {
 .message {
   color: red;
 }
+*/
