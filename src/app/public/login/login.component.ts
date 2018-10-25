@@ -23,16 +23,10 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.message = null;
-    this.auth.login(this.username, this.password).subscribe(
-      (token) => {
-        console.log('token', token);
-        if (token) {
-          this.router.navigateByUrl(''); // todo make product-lookup page
-          // this.router.navigateByUrl('/product-lookup');
-        } else {
-          this.message = 'Login failed!';
-        }
-      },
+    this.auth.login(this.username, this.password).then(
+      (data) => {
+        console.log(data);
+      }).catch(
       (error) => {
         console.error(error);
       });

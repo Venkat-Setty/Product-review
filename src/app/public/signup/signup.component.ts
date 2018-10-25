@@ -35,12 +35,13 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
-    this.auth.signup(this.user).subscribe((response) => {
-      if (response) {
+    this.auth.signup(this.user)
+      .then(() => {
         this.signupSuccess = true;
-      } else {
-        this.message = 'Signup failed!';
-      }
+      })
+      .catch(function (error) {
+        alert(error.message);
+        console.log(error);
     });
   }
 }
