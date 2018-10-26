@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.message = null;
     this.auth.login(this.username, this.password).then(
       (data) => {
-        console.log(data);
+        this.router.navigateByUrl('/product-lookup');
       }).catch(
       (error) => {
         console.error(error);

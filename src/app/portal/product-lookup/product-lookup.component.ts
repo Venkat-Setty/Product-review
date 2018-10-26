@@ -15,30 +15,31 @@ export class ProductLookupComponent implements OnInit {
   shops: any;
   trademarks: any;
   products: any;
-  ratings: any;
-
+  ratings: Rate[];
   currentShop: any;
   currentTrademark: any;
   currentProduct: any;
-
+  currentProductTemp: any;
   user: IUser;
   newRate: Rate;
-
-  ratingTotal: number;
-  ratingAverage: number;
-  star1Percent: number;
-  star2Percent: number;
-  star3Percent: number;
-  star4Percent: number;
-  star5Percent: number;
+  ratingTotal = 0;
+  ratingAverage = 0;
+  star1Percent = 0;
+  star2Percent = 0;
+  star3Percent = 0;
+  star4Percent = 0;
+  star5Percent = 0;
+  isProductDetail = false;
 
   constructor(private auth: AuthenticationService, private db: AngularFirestore) {
 
   }
 
   ngOnInit() {
+    this.auth.user().subscribe(
+      (user) => this.user = user
+    );
     this.newRate = new Rate();
-
     this.db.collection('/shops')
       .valueChanges()
       .subscribe(data => {
@@ -73,47 +74,56 @@ export class ProductLookupComponent implements OnInit {
   }
 
   changeProduct(product) {
-    this.currentProduct = product;
+    this.currentProductTemp = product ? product : null;
   }
 
   go() {
-    console.log(this.currentProduct);
-    const cRatings = this.db.collection('/rating', ref => {
-      return ref.where('product_id', '==', this.currentProduct.id);
-    });
-    cRatings.valueChanges().subscribe(data => {
-      this.ratings = data;
-      if (this.ratings && this.ratings.length > 0) {
-        this.ratingTotal = this.ratings.length;
-        this.ratingAverage = _.meanBy(this.ratings, (rating) => rating.rate);
-      } else {
-        this.ratingTotal = 0;
-        this.ratingAverage = 0;
-      }
-      this.star1Percent = this.ratings.filter(rating => {
-        return rating.rate === 1;
-      }).length * 100 / this.ratingTotal;
+    this.currentProduct = this.currentProductTemp;
+    if (this.currentProduct) {
+      const cRatings = this.db.collection('/rating', ref => {
+        return ref.where('product_id', '==', this.currentProduct.id);
+      });
+      cRatings.valueChanges().subscribe((data: Rate[]) => {
+        this.ratings = data;
+        console.log(this.ratings);
+        if (this.ratings && this.ratings.length > 0) {
+          this.ratingTotal = this.ratings.length;
+          this.ratingAverage = _.meanBy(this.ratings, (rating) => rating.rate);
+        } else {
+          this.ratingTotal = 0;
+          this.ratingAverage = 0;
+        }
+        this.star1Percent = this.ratings.filter(rating => {
+          return rating.rate === 1;
+        }).length * 100 / this.ratingTotal;
+        this.star1Percent = !this.star1Percent ? 0 : this.star1Percent;
 
-      this.star2Percent = this.ratings.filter(rating => {
-        return rating.rate === 2;
-      }).length * 100 / this.ratingTotal;
+        this.star2Percent = this.ratings.filter(rating => {
+          return rating.rate === 2;
+        }).length * 100 / this.ratingTotal;
+        this.star2Percent = !this.star2Percent ? 0 : this.star2Percent;
 
-      this.star3Percent = this.ratings.filter(rating => {
-        return rating.rate === 3;
-      }).length * 100 / this.ratingTotal;
+        this.star3Percent = this.ratings.filter(rating => {
+          return rating.rate === 3;
+        }).length * 100 / this.ratingTotal;
+        this.star3Percent = !this.star3Percent ? 0 : this.star3Percent;
 
-      this.star4Percent = this.ratings.filter(rating => {
-        return rating.rate === 4;
-      }).length * 100 / this.ratingTotal;
+        this.star4Percent = this.ratings.filter(rating => {
+          return rating.rate === 4;
+        }).length * 100 / this.ratingTotal;
+        this.star4Percent = !this.star4Percent ? 0 : this.star4Percent;
 
-      this.star5Percent = this.ratings.filter(rating => {
-        return rating.rate === 5;
-      }).length * 100 / this.ratingTotal;
-    });
+        this.star5Percent = this.ratings.filter(rating => {
+          return rating.rate === 5;
+        }).length * 100 / this.ratingTotal;
+        this.star5Percent = !this.star5Percent ? 0 : this.star5Percent;
+      });
+    }
+    this.isProductDetail = true;
   }
 
-  rating() {
-    console.log(this.newRate);
+  saveRating() {
+    this.newRate.user = this.user;
   }
 
   filterProducts() {
@@ -122,7 +132,7 @@ export class ProductLookupComponent implements OnInit {
     });
     cProducts.valueChanges().subscribe(data => {
       this.products = data;
-      this.currentProduct = this.products[0];
+      this.currentProductTemp = this.products[0];
     });
   }
 }
