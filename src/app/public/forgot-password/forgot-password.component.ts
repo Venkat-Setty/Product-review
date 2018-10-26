@@ -21,12 +21,10 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   reset() {
-    // this.auth.reset(this.email).subscribe((response) => {
-    //   if (response) {
-    //     this.showComplete = true;
-    //   } else {
-    //     this.message = 'Reset failed!';
-    //   }
-    // });
+    this.auth.forgotPassword(this.email).then(() =>
+      this.showComplete = true,
+    ).catch(
+      (error) => alert(error.message),
+    );
   }
 }

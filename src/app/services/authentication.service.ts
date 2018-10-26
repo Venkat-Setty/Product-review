@@ -39,6 +39,11 @@ export class AuthenticationService {
     });
   }
 
+  forgotPassword(email: string) {
+    const url = `${location.protocol}//${location.hostname}:${location.port}`;
+    return this.afAuth.auth.sendPasswordResetEmail(email, { url });
+  }
+
   user(): Observable<IUser> {
     return this.afAuth.authState.pipe(
       map((user) => (user ? {
