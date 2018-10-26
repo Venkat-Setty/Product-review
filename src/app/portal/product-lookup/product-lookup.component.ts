@@ -82,7 +82,7 @@ export class ProductLookupComponent implements OnInit {
         return ref.where('product_id', '==', this.currentProduct.id);
       });
       this.ratingsCollection.valueChanges().subscribe((data: Rate[]) => {
-        this.ratings = data;
+        this.ratings = data.sort((a, b) => b.created_date - a.created_date);
         if (this.ratings && this.ratings.length > 0) {
           this.justRatings = this.ratings.filter(rating => {
             return rating.rate * rating.rate > 0;
@@ -124,15 +124,22 @@ export class ProductLookupComponent implements OnInit {
 
   saveRating() {
     this.newRate.user = this.user;
-    const id = this.db.createId();
+    const id = Date.now().toString();
     this.ratingsCollection.doc(id).set({
       'product_id': this.currentProduct.id,
       'rate': this.newRate.rate,
       'comment': this.newRate.comment,
       'user': {
         'username': this.user.username,
-      }
-    }).then().catch();
+      },
+      'created_date': Date.now(),
+    }).then(() => {
+      alert('Thanks for rating!');
+      this.newRate.rate = 0;
+      this.newRate.comment = '';
+    }).catch((error) => {
+      alert(error.message);
+    });
   }
 
   filterProducts() {

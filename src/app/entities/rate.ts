@@ -6,4 +6,5 @@ export class Rate {
   product_id: number;
   rate = 0;
   comment?: string;
+  created_date: number;
 }
