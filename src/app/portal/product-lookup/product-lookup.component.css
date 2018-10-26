@@ -1,26 +1,36 @@
 .font-20 {
   font-size: 20px;
 }
+
 .rating {
   color: #4b66b8;
 }
+
 .stars {
   display: inline-block;
 }
+
 .count-rating {
   display: inline-block;
   margin: 0 10px;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
+
 .stars .fa {
   color: #d2b724;
   margin: 0 1px;
+  font-size: 1.5rem;
 }
+
 .stars .fa.fa-star-o {
   color: #d2b724;
 }
+
 .fa.fa-caret-down {
   color: black;
 }
+
 progress {
   margin: 0 10px;
   -webkit-appearance: none;
@@ -34,7 +44,9 @@ progress::-webkit-progress-bar {
 ::-webkit-progress-value {
   background-color: #d2b724;
 }
+
 ngb-rating {
   color: #d2b724;
   outline: none;
+  font-size: 2rem;
 }

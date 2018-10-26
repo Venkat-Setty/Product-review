@@ -4,6 +4,7 @@ import {IUser} from '../../entities/user';
 import {Rate} from '../../entities/rate';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import * as _ from 'lodash';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-product-lookup',
@@ -48,6 +49,7 @@ export class ProductLookupComponent implements OnInit {
       .subscribe(data => {
         this.shops = data;
         this.currentShop = this.shops[0];
+        this.filterProducts();
       });
 
     this.db.collection('/trademarks')
@@ -55,15 +57,8 @@ export class ProductLookupComponent implements OnInit {
       .subscribe(data => {
         this.trademarks = data;
         this.currentTrademark = this.trademarks[0];
+        this.filterProducts();
       });
-
-    const __this = this;
-    const time = setInterval(function () {
-      if (__this.currentShop && __this.currentTrademark) {
-        __this.filterProducts();
-        clearInterval(time);
-      }
-    });
   }
 
   changeShop(shop) {
@@ -141,12 +136,21 @@ export class ProductLookupComponent implements OnInit {
   }
 
   filterProducts() {
-    const cProducts = this.db.collection('/products', ref => {
-      return ref.where('shop_id', '==', this.currentShop.id).where('trademark_id', '==', this.currentTrademark.id);
-    });
+    if (!this.currentProduct && !this.currentTrademark) {
+      return false;
+    }
+    const cProducts = this.db.collection('/products', (ref) => ref
+      .where('shop_id', '==', this.currentShop.id)
+      .where('trademark_id', '==', this.currentTrademark.id),
+    );
+
     cProducts.valueChanges().subscribe(data => {
       this.products = data;
       this.currentProductTemp = this.products[0];
     });
+  }
+
+  ratingAverageRounded() {
+    return Math.round(this.ratingAverage);
   }
 }

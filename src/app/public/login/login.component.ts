@@ -9,11 +9,9 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public isLogin: boolean;
-  public username: string;
+  public email: string;
   public password: string;
   public message: string;
-  public cssMessage: string;
 
   constructor(
     private auth: AuthenticationService,
@@ -21,16 +19,16 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isLogin = false;
   }
 
   login() {
     this.message = null;
-    this.auth.login(this.username, this.password).then(
-      (data) => {
+    this.auth.login(this.email, this.password).then(
+      () => {
         this.router.navigateByUrl('/product-lookup');
       }).catch(
       (error) => {
+        alert(error.message);
         console.error(error);
       });
   }

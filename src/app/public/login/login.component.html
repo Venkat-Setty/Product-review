@@ -1,34 +1,26 @@
-<ng-container *ngIf="!isLogin">
-  <form class="form-type-material" (submit)="login()">
-    <div class="form-group">
-      <!--<label for="username">Username</label>-->
-      <input class="form-control" type="text" id="username" name="username"
-             [(ngModel)]="username" placeholder="Username">
-    </div>
-
-    <div class="form-group">
-      <!--<label for="password">Password</label>-->
-      <input class="form-control" type="password" id="password" name="password"
-             [(ngModel)]="password" placeholder="Password">
-    </div>
-
-    <div *ngIf="message" class="message">
-      <p>{{message}}</p>
-    </div>
-
-    <div class="form-group">
-      <button class="btn btn-primary">Login</button>
-    </div>
-  </form>
-  <div style="margin-top: 3rem;">
-    <a [routerLink]="'/forgot-password'">Forgot password</a>
-    &nbsp;
-    <a [routerLink]="'/signup'">Signup</a>
+<form class="form-type-material" (submit)="login()">
+  <div class="form-group">
+    <!--<label for="username">Username</label>-->
+    <input class="form-control" type="email" id="email" name="email"
+      [(ngModel)]="email" placeholder="Email">
   </div>
-</ng-container>
 
-<div class="alert text-center" *ngIf="isLogin">
-  <p>Congratulations, {{username}}, You have successfully signed up! <br>
-    Happy reviewing!</p>
-  <p><a routerLink="">Got it, Proceed to review >></a></p>
+  <div class="form-group">
+    <!--<label for="password">Password</label>-->
+    <input class="form-control" type="password" id="password" name="password"
+      [(ngModel)]="password" placeholder="Password">
+  </div>
+
+  <div *ngIf="message" class="message">
+    <p>{{message}}</p>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary">Login</button>
+  </div>
+</form>
+<div style="margin-top: 3rem;">
+  <a [routerLink]="'/forgot-password'">Forgot password</a>
+  &nbsp;
+  <a [routerLink]="'/signup'">Signup</a>
 </div>
