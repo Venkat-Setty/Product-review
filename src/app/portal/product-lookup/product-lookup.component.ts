@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {IUser} from '../../entities/user';
 import {Rate} from '../../entities/rate';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import * as _ from 'lodash';
 
 @Component({
@@ -16,6 +16,7 @@ export class ProductLookupComponent implements OnInit {
   trademarks: any;
   products: any;
   ratings: Rate[];
+  justRatings: Rate[];
   currentShop: any;
   currentTrademark: any;
   currentProduct: any;
@@ -30,6 +31,8 @@ export class ProductLookupComponent implements OnInit {
   star4Percent = 0;
   star5Percent = 0;
   isProductDetail = false;
+
+  private ratingsCollection: AngularFirestoreCollection<Rate>;
 
   constructor(private auth: AuthenticationService, private db: AngularFirestore) {
 
@@ -80,42 +83,44 @@ export class ProductLookupComponent implements OnInit {
   go() {
     this.currentProduct = this.currentProductTemp;
     if (this.currentProduct) {
-      const cRatings = this.db.collection('/rating', ref => {
+      this.ratingsCollection = this.db.collection('/rating', ref => {
         return ref.where('product_id', '==', this.currentProduct.id);
       });
-      cRatings.valueChanges().subscribe((data: Rate[]) => {
+      this.ratingsCollection.valueChanges().subscribe((data: Rate[]) => {
         this.ratings = data;
-        console.log(this.ratings);
         if (this.ratings && this.ratings.length > 0) {
-          this.ratingTotal = this.ratings.length;
-          this.ratingAverage = _.meanBy(this.ratings, (rating) => rating.rate);
+          this.justRatings = this.ratings.filter(rating => {
+            return rating.rate * rating.rate > 0;
+          });
+          this.ratingTotal = this.justRatings.length;
+          this.ratingAverage = _.ceil(_.meanBy(this.ratings, (rating) => rating.rate), 1);
         } else {
           this.ratingTotal = 0;
           this.ratingAverage = 0;
         }
-        this.star1Percent = this.ratings.filter(rating => {
+        this.star1Percent = _.ceil( this.ratings.filter(rating => {
           return rating.rate === 1;
-        }).length * 100 / this.ratingTotal;
+        }).length * 100 / this.ratingTotal);
         this.star1Percent = !this.star1Percent ? 0 : this.star1Percent;
 
-        this.star2Percent = this.ratings.filter(rating => {
+        this.star2Percent = _.ceil(this.ratings.filter(rating => {
           return rating.rate === 2;
-        }).length * 100 / this.ratingTotal;
+        }).length * 100 / this.ratingTotal);
         this.star2Percent = !this.star2Percent ? 0 : this.star2Percent;
 
-        this.star3Percent = this.ratings.filter(rating => {
+        this.star3Percent = _.ceil(this.ratings.filter(rating => {
           return rating.rate === 3;
-        }).length * 100 / this.ratingTotal;
+        }).length * 100 / this.ratingTotal);
         this.star3Percent = !this.star3Percent ? 0 : this.star3Percent;
 
-        this.star4Percent = this.ratings.filter(rating => {
+        this.star4Percent = _.ceil(this.ratings.filter(rating => {
           return rating.rate === 4;
-        }).length * 100 / this.ratingTotal;
+        }).length * 100 / this.ratingTotal);
         this.star4Percent = !this.star4Percent ? 0 : this.star4Percent;
 
-        this.star5Percent = this.ratings.filter(rating => {
+        this.star5Percent = _.ceil(this.ratings.filter(rating => {
           return rating.rate === 5;
-        }).length * 100 / this.ratingTotal;
+        }).length * 100 / this.ratingTotal);
         this.star5Percent = !this.star5Percent ? 0 : this.star5Percent;
       });
     }
@@ -124,6 +129,15 @@ export class ProductLookupComponent implements OnInit {
 
   saveRating() {
     this.newRate.user = this.user;
+    const id = this.db.createId();
+    this.ratingsCollection.doc(id).set({
+      'product_id': this.currentProduct.id,
+      'rate': this.newRate.rate,
+      'comment': this.newRate.comment,
+      'user': {
+        'username': this.user.username,
+      }
+    }).then().catch();
   }
 
   filterProducts() {

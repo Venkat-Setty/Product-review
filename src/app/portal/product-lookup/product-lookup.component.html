@@ -95,7 +95,7 @@
             <p>{{rating.comment}}</p>
           </div>
           <div class="col-2 text-right">
-            <div class="stars">
+            <div *ngIf="rating.rate > 0" class="stars">
               <i class="fa {{rating.rate < 1 ? 'fa-star-o' : 'fa-star'}}"></i>
               <i class="fa {{rating.rate < 2 ? 'fa-star-o' : 'fa-star'}}"></i>
               <i class="fa {{rating.rate < 3 ? 'fa-star-o' : 'fa-star'}}"></i>
