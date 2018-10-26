@@ -1,0 +1,40 @@
+.font-20 {
+  font-size: 20px;
+}
+.rating {
+  color: #4b66b8;
+}
+.stars {
+  display: inline-block;
+}
+.count-rating {
+  display: inline-block;
+  margin: 0 10px;
+}
+.stars .fa {
+  color: #d2b724;
+  margin: 0 1px;
+}
+.stars .fa.fa-star-o {
+  color: #d2b724;
+}
+.fa.fa-caret-down {
+  color: black;
+}
+progress {
+  margin: 0 10px;
+  -webkit-appearance: none;
+  vertical-align: middle;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #f2f2f2;
+}
+
+::-webkit-progress-value {
+  background-color: #d2b724;
+}
+ngb-rating {
+  color: #d2b724;
+  outline: none;
+}

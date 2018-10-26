@@ -14,7 +14,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     return this.auth.user().pipe(map((user) => {
-      console.log(user);
       const canActivate = !!user;
       if (!canActivate) {
         this.redirectToLogin();
@@ -24,7 +23,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private redirectToLogin() {
-    console.log('redirectToLogin');
     this.router.navigateByUrl('login');
   }
 }

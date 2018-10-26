@@ -7,6 +7,8 @@ import {PortalRoutingModule} from './portal-routing.module';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TopbarComponent } from './layout/topbar/topbar.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import { TopbarComponent } from './layout/topbar/topbar.component';
     RouterModule,
     PortalRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule,
+    AngularFirestoreModule
   ],
   declarations: [
     PortalComponent,

@@ -6,13 +6,13 @@
       </select>
     </div>
     <div class="col-4 form-group">
-      <select class="form-control" [ngModel]="currentCategory" name="currentCategory" (ngModelChange)="changeCategory($event)">
-        <option *ngFor="let category of currentCategoryList" [ngValue]="category">{{category.name}}</option>
+      <select class="form-control" [ngModel]="currentTrademark" name="currentCategory" (ngModelChange)="changeCategory($event)">
+        <option *ngFor="let trademark of trademarks" [ngValue]="trademark">{{trademark.name}}</option>
       </select>
     </div>
     <div class="col-4 form-group">
       <select class="form-control" [ngModel]="currentProduct" name="currentProduct" (ngModelChange)="changeProduct($event)">
-        <option *ngFor="let product of currentProductList" [ngValue]="product">{{product.name}}</option>
+        <option *ngFor="let product of products" [ngValue]="product">{{product.name}}</option>
       </select>
     </div>
     <div class="col-1 form-group">
@@ -22,5 +22,68 @@
   <div class="alert text-center">
     <p>Welcome User! Choose a product to review from the product list <br>
     or look up for other's reviews</p>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title"><strong>Customer reviews</strong></h4>
+      <div class="row">
+        <div class="rating col-6">
+          <div class="stars">
+            <i class="fa {{ratingAverage < 1 ? 'fa-star-o' : 'fa-star'}}"></i>
+            <i class="fa {{ratingAverage < 2 ? 'fa-star-o' : 'fa-star'}}"></i>
+            <i class="fa {{ratingAverage < 3 ? 'fa-star-o' : 'fa-star'}}"></i>
+            <i class="fa {{ratingAverage < 4 ? 'fa-star-o' : 'fa-star'}}"></i>
+            <i class="fa {{ratingAverage < 5 ? 'fa-star-o' : 'fa-star'}}"></i>
+          </div>
+          <div class="count-rating">{{ratingTotal}}</div>
+          <div class="detail-rating">
+            <span class="font-20">{{ratingAverage}} out of 5 stars <i class="fa fa-caret-down" aria-hidden="true"></i></span>
+          </div>
+          <div class="rating-progress font-20">
+            <div>
+              <span>5 star</span>
+              <progress [value]="this.star1Percent" max="100"></progress>
+              <span>{{this.star1Percent}}%</span>
+            </div>
+            <div>
+              <span>4 star</span>
+              <progress [value]="this.star2Percent" max="100"></progress>
+              <span>{{this.star2Percent}}%</span>
+            </div>
+            <div>
+              <span>3 star</span>
+              <progress [value]="this.star3Percent" max="100"></progress>
+              <span>{{this.star3Percent}}%</span>
+            </div>
+            <div>
+              <span>2 star</span>
+              <progress [value]="this.star4Percent" max="100"></progress>
+              <span>{{this.star4Percent}}%</span>
+            </div>
+            <div>
+              <span>1 star</span>
+              <progress [value]="this.star5Percent" max="100"></progress>
+              <span>{{this.star5Percent}}%</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <span class="font-20">Share your thoughts with other customer</span>
+          <div class="form-group">
+            <ngb-rating [(rate)]="newRate.rate" [max]="5"></ngb-rating>
+          </div>
+          <div class="form-group">
+            <textarea [(ngModel)]="newRate.comment" class="form-control" rows="5"></textarea>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary float-right" (click)="rating()">Submit</button>
+          </div>
+        </div>
+      </div>
+      <div class="list-rating">
+        <span>Rating List</span>
+      </div>
+    </div>
   </div>
 </div>

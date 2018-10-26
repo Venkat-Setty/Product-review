@@ -1,4 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
+import {IUser} from '../../entities/user';
+import {Rate} from '../../entities/rate';
+import {AngularFirestore} from '@angular/fire/firestore';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-product-lookup',
@@ -7,106 +12,117 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ProductLookupComponent implements OnInit {
 
-  shops = [
-    {
-      name: 'Amazon',
-      categories: [
-        {
-          name: 'Prada',
-          products: [{name: 'Handbag'}, {name: 'Shoe'}, {name: 'Hat'}, {name: 'Watch'}, {name: 'Shirt'}, {name: 'Trousers'},]
-        },
-        {
-          name: 'Louis Vuitton',
-          products: [{name: 'Handbag 2'}, {name: 'Shoe 2'}, {name: 'Hat 2'}, {name: 'Watch 2'}, {name: 'Shirt 2'}, {name: 'Trousers 2'},]
-        },
-        {
-          name: 'CHANEL',
-          products: [{name: 'Handbag 3'}, {name: 'Shoe 3'}, {name: 'Hat 3'}, {name: 'Watch 3'}, {name: 'Shirt 3'}, {name: 'Trousers 3'},]
-        },
-        {
-          name: 'DIOR',
-          products: [{name: 'Handbag 4'}, {name: 'Shoe 4'}, {name: 'Hat 4'}, {name: 'Watch 4'}, {name: 'Shirt 4'}, {name: 'Trousers 4'},]
-        },
-        {
-          name: 'HERMÈS',
-          products: [{name: 'Handbag 5'}, {name: 'Shoe 5'}, {name: 'Hat 5'}, {name: 'Watch 5'}, {name: 'Shirt 5'}, {name: 'Trousers 5'},]
-        },
-        {
-          name: 'BURBERRY',
-          products: [{name: 'Handbag 6'}, {name: 'Shoe 6'}, {name: 'Hat 6'}, {name: 'Watch 6'}, {name: 'Shirt 6'}, {name: 'Trousers 6'},]
-        },
-      ]
-    },
-    {
-      name: 'Ebay',
-      categories: [
-        {
-          name: 'Prada 2',
-          products: [{name: 'Handbag'}, {name: 'Shoe'}, {name: 'Hat'}, {name: 'Watch'}, {name: 'Shirt'}, {name: 'Trousers'},]
-        },
-        {
-          name: 'Louis Vuitton 2',
-          products: [{name: 'Handbag 2'}, {name: 'Shoe 2'}, {name: 'Hat 2'}, {name: 'Watch 2'}, {name: 'Shirt 2'}, {name: 'Trousers 2'},]
-        },
-        {
-          name: 'CHANEL 2',
-          products: [{name: 'Handbag 3'}, {name: 'Shoe 3'}, {name: 'Hat 3'}, {name: 'Watch 3'}, {name: 'Shirt 3'}, {name: 'Trousers 3'},]
-        },
-        {
-          name: 'DIOR 2',
-          products: [{name: 'Handbag 4'}, {name: 'Shoe 4'}, {name: 'Hat 4'}, {name: 'Watch 4'}, {name: 'Shirt 4'}, {name: 'Trousers 4'},]
-        },
-        {
-          name: 'HERMÈS 2',
-          products: [{name: 'Handbag 5'}, {name: 'Shoe 5'}, {name: 'Hat 5'}, {name: 'Watch 5'}, {name: 'Shirt 5'}, {name: 'Trousers 5'},]
-        },
-        {
-          name: 'BURBERRY 2',
-          products: [{name: 'Handbag 6'}, {name: 'Shoe 6'}, {name: 'Hat 6'}, {name: 'Watch 6'}, {name: 'Shirt 6'}, {name: 'Trousers 6'},]
-        },
-      ]
-    }
-  ];
-
-  currentCategoryList: any;
-  currentProductList: any;
+  shops: any;
+  trademarks: any;
+  products: any;
+  ratings: any;
 
   currentShop: any;
-  currentCategory: any;
+  currentTrademark: any;
   currentProduct: any;
 
-  constructor() {
+  user: IUser;
+  newRate: Rate;
+
+  ratingTotal: number;
+  ratingAverage: number;
+  star1Percent: number;
+  star2Percent: number;
+  star3Percent: number;
+  star4Percent: number;
+  star5Percent: number;
+
+  constructor(private auth: AuthenticationService, private db: AngularFirestore) {
+
   }
 
   ngOnInit() {
-    this.currentShop = this.shops[0];
-    this.currentCategoryList = this.currentShop.categories;
-    this.currentProductList =  this.currentCategoryList[0].products;
-    this.currentCategory = this.currentShop.categories[0];
-    this.currentProduct = this.currentCategory.products[0];
-  }
+    this.newRate = new Rate();
 
-  go() {
-    console.log(this.currentShop);
-    console.log(this.currentCategory);
-    console.log(this.currentProduct);
+    this.db.collection('/shops')
+      .valueChanges()
+      .subscribe(data => {
+        this.shops = data;
+        this.currentShop = this.shops[0];
+      });
+
+    this.db.collection('/trademarks')
+      .valueChanges()
+      .subscribe(data => {
+        this.trademarks = data;
+        this.currentTrademark = this.trademarks[0];
+      });
+
+    const __this = this;
+    const time = setInterval(function () {
+      if (__this.currentShop && __this.currentTrademark) {
+        __this.filterProducts();
+        clearInterval(time);
+      }
+    });
   }
 
   changeShop(shop) {
     this.currentShop = shop;
-    this.currentCategoryList = this.currentShop.categories;
-    this.currentCategory = this.currentCategoryList[0];
-    this.currentProductList = this.currentCategory.products;
-    this.currentProduct = this.currentProductList[0];
+    this.filterProducts();
   }
 
-  changeCategory(category) {
-    this.currentCategory = category;
-    this.currentProductList = this.currentCategory.products;
-    this.currentProduct = this.currentProductList[0];
+  changeCategory(trademark) {
+    this.currentTrademark = trademark;
+    this.filterProducts();
   }
 
   changeProduct(product) {
     this.currentProduct = product;
+  }
+
+  go() {
+    console.log(this.currentProduct);
+    const cRatings = this.db.collection('/rating', ref => {
+      return ref.where('product_id', '==', this.currentProduct.id);
+    });
+    cRatings.valueChanges().subscribe(data => {
+      this.ratings = data;
+      if (this.ratings && this.ratings.length > 0) {
+        this.ratingTotal = this.ratings.length;
+        this.ratingAverage = _.meanBy(this.ratings, (rating) => rating.rate);
+      } else {
+        this.ratingTotal = 0;
+        this.ratingAverage = 0;
+      }
+      this.star1Percent = this.ratings.filter(rating => {
+        return rating.rate === 1;
+      }).length * 100 / this.ratingTotal;
+
+      this.star2Percent = this.ratings.filter(rating => {
+        return rating.rate === 2;
+      }).length * 100 / this.ratingTotal;
+
+      this.star3Percent = this.ratings.filter(rating => {
+        return rating.rate === 3;
+      }).length * 100 / this.ratingTotal;
+
+      this.star4Percent = this.ratings.filter(rating => {
+        return rating.rate === 4;
+      }).length * 100 / this.ratingTotal;
+
+      this.star5Percent = this.ratings.filter(rating => {
+        return rating.rate === 5;
+      }).length * 100 / this.ratingTotal;
+    });
+  }
+
+  rating() {
+    console.log(this.newRate);
+  }
+
+  filterProducts() {
+    const cProducts = this.db.collection('/products', ref => {
+      return ref.where('shop_id', '==', this.currentShop.id).where('trademark_id', '==', this.currentTrademark.id);
+    });
+    cProducts.valueChanges().subscribe(data => {
+      this.products = data;
+      this.currentProduct = this.products[0];
+    });
   }
 }
